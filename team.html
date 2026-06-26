@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bevri — Team Structure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#070a12;
+    --ink-2:#0c111d;
+    --panel:#111827;
+    --panel-2:#0f1626;
+    --line:#22304a;
+    --line-glow:#2dd4bf;
+    --text:#e8edf6;
+    --text-dim:#8a97b0;
+    --text-faint:#56627c;
+    --gold:#fbbf24;
+    --teamA:#38bdf8;
+    --teamB:#34d399;
+    --teamC:#c084fc;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{
+    font-family:'Sora',system-ui,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(900px 500px at 50% -8%, rgba(45,212,191,.10), transparent 60%),
+      radial-gradient(700px 500px at 100% 0%, rgba(192,132,252,.08), transparent 55%),
+      var(--ink);
+    min-height:100vh;
+    padding:clamp(24px,5vw,72px) clamp(16px,4vw,56px) 96px;
+    position:relative;
+    overflow-x:auto;
+  }
+  /* blueprint grid */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(120,160,220,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(120,160,220,.035) 1px,transparent 1px);
+    background-size:34px 34px;
+    mask-image:radial-gradient(ellipse 90% 70% at 50% 30%,#000 55%,transparent 100%);
+    pointer-events:none;z-index:0;
+  }
+  /* grain */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+
+  /* ---- header ---- */
+  header{text-align:center;margin-bottom:clamp(36px,6vw,68px);animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--line-glow);margin-bottom:18px;
+    display:inline-flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before,.eyebrow::after{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--line-glow))}
+  .eyebrow::after{background:linear-gradient(90deg,var(--line-glow),transparent)}
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;
+    font-size:clamp(42px,7vw,84px);line-height:.98;letter-spacing:-.02em;
+  }
+  h1 em{font-style:italic;font-weight:500;color:var(--line-glow);
+    background:linear-gradient(120deg,#5eead4,#7dd3fc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{margin-top:18px;color:var(--text-dim);font-size:15px;max-width:520px;margin-inline:auto;line-height:1.6}
+  .meta{margin-top:20px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;color:var(--text-faint);text-transform:uppercase}
+
+  /* ---- tree ---- */
+  .tree{display:flex;justify-content:center;min-width:max-content;margin-inline:auto}
+  .tree ul{position:relative;padding-top:34px;display:flex;justify-content:center}
+  .tree li{list-style:none;position:relative;padding:34px 18px 0;display:flex;flex-direction:column;align-items:center}
+  .tree li::before,.tree li::after{
+    content:"";position:absolute;top:0;right:50%;width:50%;height:34px;
+    border-top:1.5px solid var(--line);
+  }
+  .tree li::after{right:auto;left:50%;border-left:1.5px solid var(--line)}
+  .tree li:first-child::before{border:0}
+  .tree li:last-child::after{border:0}
+  .tree li:last-child::before{border-right:1.5px solid var(--line);border-radius:0 8px 0 0}
+  .tree li:first-child::after{border-left:1.5px solid var(--line);border-radius:8px 0 0 0}
+  .tree>ul>li{padding-top:0}
+  .tree>ul>li::before,.tree>ul>li::after{display:none}
+  .tree ul ul::before{
+    content:"";position:absolute;top:0;left:50%;width:0;height:34px;border-left:1.5px solid var(--line);
+  }
+
+  /* ---- nodes ---- */
+  .node{
+    position:relative;display:flex;align-items:center;gap:14px;
+    background:linear-gradient(180deg,var(--panel),var(--panel-2));
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 18px 14px 14px;min-width:240px;
+    box-shadow:0 14px 30px -18px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.03);
+    transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,box-shadow .35s;
+    animation:rise .7s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .node:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent,#5eead4) 60%,var(--line));
+    box-shadow:0 22px 44px -20px rgba(0,0,0,.95),0 0 0 1px color-mix(in srgb,var(--accent,#5eead4) 40%,transparent)}
+
+  .avatar{
+    --accent:#5eead4;flex:none;width:46px;height:46px;border-radius:12px;position:relative;overflow:hidden;
+    display:grid;place-items:center;
+    background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 32%,#0b1220),#0b1220);
+    border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:15px;letter-spacing:.02em;
+    color:color-mix(in srgb,var(--accent) 75%,#fff);
+  }
+  .avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .info{display:flex;flex-direction:column;gap:3px;text-align:left;min-width:0}
+  .name{font-weight:600;font-size:15.5px;letter-spacing:-.01em;line-height:1.15;display:flex;align-items:center;gap:7px}
+  .role{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim)}
+  .lead-badge{font-size:10px;font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;color:var(--gold);
+    border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);border-radius:6px;padding:1px 6px;text-transform:uppercase;flex:none}
+
+  /* lead node (top) */
+  .node.lead{--accent:var(--gold);min-width:300px;padding:18px 26px 18px 18px;
+    background:linear-gradient(180deg,#161b29,#0f1422);
+    border-color:color-mix(in srgb,var(--gold) 30%,var(--line));
+    box-shadow:0 26px 60px -26px rgba(251,191,36,.25),0 14px 30px -18px rgba(0,0,0,.9)}
+  .node.lead .avatar{width:60px;height:60px;font-size:19px;border-radius:14px}
+  .node.lead .name{font-size:19px;font-family:'Fraunces',serif;font-weight:600}
+  .node.lead .role{font-size:11px;color:color-mix(in srgb,var(--gold) 70%,#fff)}
+
+  /* team column */
+  .team{display:flex;flex-direction:column;align-items:stretch;gap:14px;width:282px}
+  .team-head{
+    position:relative;border-radius:var(--radius);padding:13px 16px;text-align:left;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 16%,var(--panel)),var(--panel-2));
+    border:1px solid color-mix(in srgb,var(--accent) 38%,var(--line));
+    box-shadow:0 14px 30px -20px rgba(0,0,0,.9);
+    animation:rise .7s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .team-head .tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .team-head .tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+  .team-head .tname{font-weight:600;font-size:14px;line-height:1.3;color:var(--text)}
+  .team-head .scope{margin-top:5px;font-size:11.5px;color:var(--text-faint);line-height:1.45}
+
+  .members{display:flex;flex-direction:column;gap:11px;position:relative;padding-left:18px}
+  .members::before{content:"";position:absolute;left:7px;top:-8px;bottom:14px;width:1.5px;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 55%,transparent),transparent)}
+  .members .node{min-width:0;width:100%}
+  .members .node::before{content:"";position:absolute;left:-11px;top:50%;width:11px;height:1.5px;
+    background:color-mix(in srgb,var(--accent) 55%,transparent)}
+
+  footer{margin-top:60px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;
+    animation:rise .8s .2s cubic-bezier(.2,.7,.2,1) both}
+  .legend{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+  .dot{width:9px;height:9px;border-radius:50%}
+  .foot-note{font-size:11.5px;color:var(--text-faint);max-width:560px;line-height:1.6}
+
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  /* stagger */
+  .d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.19s}
+  .d4{animation-delay:.26s}.d5{animation-delay:.33s}.d6{animation-delay:.40s}
+  .d7{animation-delay:.47s}.d8{animation-delay:.54s}.d9{animation-delay:.61s}
+
+  @media (max-width:880px){
+    .tree,.tree ul{flex-direction:column;align-items:center}
+    .tree ul{padding-top:24px}
+    .tree li{padding:24px 0 0}
+    .tree li::before,.tree li::after,.tree ul ul::before{display:none}
+    .team{width:min(86vw,320px)}
+    .node{min-width:0;width:min(86vw,320px)}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Bevri · Engineering</div>
+    <h1>Team <em>Structure</em></h1>
+    <p class="sub">People, teams, and ownership across the Bevri platform — infrastructure, the loan application, intelligent document processing, and the agentic Operator.</p>
+    <div class="meta">10 members · 4 teams · generated 2026-06-26</div>
+  </header>
+
+  <div class="tree">
+    <ul class="root">
+      <li>
+        <!-- PROJECT LEAD -->
+        <div class="node lead d1">
+          <div class="avatar" style="--accent:var(--gold)">
+            <span>TH</span>
+            <img src="https://files.monday.com/use1/photos/105642386/thumb/105642386-user_photo_initials_2026_06_15_14_51_19.png?1781535079" alt="" onerror="this.remove()">
+          </div>
+          <div class="info">
+            <div class="name">Tanveer Hussain <span class="lead-badge">Project Lead</span></div>
+            <div class="role">Engineering Lead &amp; Project Owner</div>
+          </div>
+        </div>
+
+        <ul class="branches">
+          <!-- ============ TEAM A ============ -->
+          <li>
+            <div class="team" style="--accent:var(--teamA)">
+              <div class="team-head d2">
+                <div class="tag">Team A</div>
+                <div class="tname">Infrastructure · Bevri Operator · Social · Data Pipeline &amp; Notifications</div>
+                <div class="scope">GCP, CI/CD &amp; DevOps · agentic AI Operator · real-time social · data layer</div>
+              </div>
+              <div class="members">
+                <div class="node d3" style="--accent:var(--teamA)">
+                  <div class="avatar" style="--accent:var(--teamA)"><span>AH</span>
+                    <img src="https://files.monday.com/use1/photos/106494353/thumb/106494353-user_photo_2026_06_25_21_08_28.png?1782421708" alt="" onerror="this.remove()"></div>
+                  <div class="info"><div class="name">Ahmad Hassan Tanveer <span class="lead-badge">Lead</span></div>
+                    <div class="role">Cross-Team Engineering</div></div>
+                </div>
+                <div class="node d4" style="--accent:var(--teamA)">
+                  <div class="avatar" style="--accent:var(--teamA)"><span>AM</span>
+                    <img src="https://files.monday.com/use1/photos/105642388/thumb/105642388-user_photo_initials_2026_06_15_15_17_11.png?1781536631" alt="" onerror="this.remove()"></div>
+                  <div class="info"><div class="name">Ali Mohsin</div>
+                    <div class="role">Notifications &amp; Data Pipeline</div></div>
+                </div>
+                <div class="node d5" style="--accent:var(--teamA)">
+                  <div class="avatar" style="--accent:var(--teamA)"><span>T</span>
+                    <img src="https://files.monday.com/use1/photos/105642389/thumb/105642389-user_photo_initials_2026_06_15_16_06_00.png?1781539560" alt="" onerror="this.remove()"></div>
+                  <div class="info"><div class="name">Taimoor</div>
+                    <div class="role">Data Pipeline Engineering</div></div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- ============ TEAM B ============ -->
+          <li>
+            <div class="team" style="--accent:var(--teamB)">
+              <div class="team-head d3">
+                <div class="tag">Team B</div>
+                <div class="tname">Loan Application Module</div>
+                <div class="scope">Feature delivery, defect resolution &amp; LOS compliance</div>
+              </div>
+              <div class="members">
+                <div class="node d4" style="--accent:var(--teamB)">
+                  <div class="avatar" style="--accent:var(--teamB)"><span>UI</span>
+                    <img src="https://files.monday.com/use1/photos/105642391/thumb/105642391-user_photo_initials_2026_06_15_14_45_12.png?1781534712" alt="" onerror="this.remove()"></div>
+                  <div class="info"><div class="name">Umer Inayat <span class="lead-badge">Lead</span></div>
+                    <div class="role">Loan Application</div></div>
+                </div>
+                <div class="node d5" style="--accent:var(--teamB)">
+                  <div class="avatar" style="--accent:var(--teamB)"><span>W</span>
+                    <img src="https://files.monday.com/use1/photos/105642392/thumb/105642392-user_photo_initials_2026_06_16_12_08_45.png?1781611725" alt="" onerror="this.remove()"></div>
+                  <div class="info"><div class="name">Wahab</div>
+                    <div class="role">Loan Application Engineering</div></div>
+                </div>
+                <div class="node d6" style="--accent:var(--teamB)">
+                  <div class="avatar" style="--accent:var(--teamB)"><span>BA</span>
+                    <img src="https://files.monday.com/use1/photos/105642394/thumb/105642394-user_photo_initials_2026_06_15_16_49_23.png?1781542163" alt="" onerror="this.remove()"></div>
+                  <div class="info"><div class="name">Balaj Ali</div>
+                    <div class="role">Loan Application Engineering</div></div>
+                </div>
+                <div class="node d7" style="--accent:var(--teamB)">
+                  <div class="avatar" style="--accent:var(--teamB)"><span>HS</span></div>
+                  <div class="info"><div class="name">Hassan Saeed</div>
+                    <div class="role">QA &amp; Compliance</div></div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- ============ TEAM C ============ -->
+          <li>
+            <div class="team" style="--accent:var(--teamC)">
+              <div class="team-head d4">
+                <div class="tag">Team C</div>
+                <div class="tname">Intelligent Document Processing</div>
+                <div class="scope">Implementation-complete · delivery &amp; long-term maintenance</div>
+              </div>
+              <div class="members">
+                <div class="node d5" style="--accent:var(--teamC)">
+                  <div class="avatar" style="--accent:var(--teamC)"><span>SA</span>
+                    <img src="https://files.monday.com/use1/photos/105642395/thumb/105642395-user_photo_2026_06_26_07_59_54.png?1782460795" alt="" onerror="this.remove()"></div>
+                  <div class="info"><div class="name">Shahzad Ahmad <span class="lead-badge">Lead</span></div>
+                    <div class="role">IDP Module</div></div>
+                </div>
+                <div class="node d6" style="--accent:var(--teamC)">
+                  <div class="avatar" style="--accent:var(--teamC)"><span>RF</span>
+                    <img src="https://files.monday.com/use1/photos/105642399/thumb/105642399-user_photo_initials_2026_06_15_14_45_48.png?1781534748" alt="" onerror="this.remove()"></div>
+                  <div class="info"><div class="name">Rida Fatima</div>
+                    <div class="role">IDP Engineering</div></div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--gold)"></span>Project Lead</span>
+      <span><span class="dot" style="background:var(--teamA)"></span>Team A — Infra / Operator / Social</span>
+      <span><span class="dot" style="background:var(--teamB)"></span>Team B — Loan Application</span>
+      <span><span class="dot" style="background:var(--teamC)"></span>Team C — IDP</span>
+    </div>
+    <p class="foot-note">Avatars load from the live monday.com profiles when this page is opened with an active monday session; otherwise initials are shown. Mirrors the <strong>Team Members</strong> board in the Bevri → Team Structure workspace folder.</p>
+  </footer>
+</div>
+</body>
+</html>
+
